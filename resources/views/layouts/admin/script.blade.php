@@ -184,13 +184,13 @@
     });
     window.addEventListener('initializeDataTable', (e) => {
         initializeDataTable(e.detail.table);
-        toastrMsg(event);
+        toastrMsg(e);
         
     });
 
     function toastrMsg(event)
     {
-        toastr[event.detail.type](event.detail.message,toastr.options = {
+        toastr[event.detail[0].type](event.detail[0].message,toastr.options = {
             "closeButton": true,
             "debug": false,
             "newestOnTop": false,

@@ -41,7 +41,7 @@ class Permissions extends Component
         $permission = Permission::create($input);
         $this->createMode = false;
         $this->dispatchBrowserEvent('hide-alert-warning');
-        $this->dispatchBrowserEvent('initializeDataTable', ['table' => 'Permission']);
+        $this->dispatchBrowserEvent('initializeDataTable', ['table' => 'Permission', notifyMsg('success', 'Permission created successfully')]);
         $this->resetInputFields();
         session('message','Permission created successfully');
     }
