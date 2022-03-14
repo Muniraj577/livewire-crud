@@ -186,6 +186,12 @@
         initializeDataTable(e.detail.table);
         toastrMsg(e);
         
+        
+    });
+
+    window.addEventListener('alert-message', (e) => {
+        // initializeDataTable(e.detail.table);
+        toastrMsg(e);
     });
 
     function toastrMsg(event)

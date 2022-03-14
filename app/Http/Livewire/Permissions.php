@@ -70,6 +70,13 @@ class Permissions extends Component
         $this->dispatchBrowserEvent('initializeDataTable', ['table' => 'Permission', notifyMsg('success', 'Permission updated successfully')]);
     }
 
+    public function destroy($id)
+    {
+        $permission = Permission::find($id);
+        $permission->delete();
+        $this->dispatchBrowserEvent('alert-message', ['table' => 'Permission', notifyMsg('success', 'Permission deleted successfully')]);
+    }
+
     private function resetInputFields()
     {
         $this->state['name'] = '';

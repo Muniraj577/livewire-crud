@@ -37,7 +37,7 @@
                                         <td>{{ $permission->slug }}</td>
                                         <td>
                                             <button type="button" class="btn btn-sm btn-primary" wire:click="edit({{ $permission->id }})">Edit</button>
-                                            <button type="button" class="btn btn-sm btn-danger">Delete</button>
+                                            <button type="button" class="btn btn-sm btn-danger" wire:click="destroy({{ $permission->id }})">Delete</button>
                                         </td>
                                     </tr>
                                 @endforeach
