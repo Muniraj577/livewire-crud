@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 class PermissionObserver
 {
     /**
-     * Handle the Permission "created" event.
+     * Handle the Permission "creating" event.
      *
      * @param  \App\Models\Permission  $permission
      * @return void
@@ -18,9 +18,15 @@ class PermissionObserver
         $permission->slug = Str::slug($permission->name);
     }
 
+    /**
+     * Handle the Permission "created" event.
+     *
+     * @param  \App\Models\Permission  $permission
+     * @return void
+     */
     public function created(Permission $permission)
     {
-        
+
     }
 
     /**
@@ -29,6 +35,18 @@ class PermissionObserver
      * @param  \App\Models\Permission  $permission
      * @return void
      */
+
+    public function updating(Permission $permission)
+    {
+        $permission->slug = Str::slug($permission->name);
+    }
+    /**
+     * Handle the Permission "updated" event.
+     *
+     * @param  \App\Models\Permission  $permission
+     * @return void
+     */
+
     public function updated(Permission $permission)
     {
         //

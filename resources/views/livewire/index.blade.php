@@ -26,6 +26,7 @@
                                     <th>S.N</th>
                                     <th>Name</th>
                                     <th>Slug</th>
+                                    <th class="hidden">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -34,6 +35,10 @@
                                         <td>{{ ++$id }}</td>
                                         <td>{{ $permission->name }}</td>
                                         <td>{{ $permission->slug }}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-sm btn-primary" wire:click="edit({{ $permission->id }})">Edit</button>
+                                            <button type="button" class="btn btn-sm btn-danger">Delete</button>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>

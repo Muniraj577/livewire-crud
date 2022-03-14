@@ -10,7 +10,7 @@ use Livewire\Component;
 
 class Permissions extends Component
 {
-    public $permissions, $state = [];
+    public $permissions, $state = [], $permission_id;
     public $updateMode = false;
     public $createMode = false;
 
@@ -41,13 +41,39 @@ class Permissions extends Component
         $permission = Permission::create($input);
         $this->createMode = false;
         $this->dispatchBrowserEvent('hide-alert-warning');
-        $this->dispatchBrowserEvent('initializeDataTable', 'Permission');
+        $this->dispatchBrowserEvent('initializeDataTable', ['table' => 'Permission']);
         $this->resetInputFields();
+        session('message','Permission created successfully');
+    }
+
+    public function edit($id)
+    {
+        $permission = Permission::findOrFail($id);
+        $this->state['permission_id'] = $permission->id;
+        $this->state['name'] = $permission->name;
+        $this->updateMode = true;
+        $this->dispatchBrowserEvent('hide-alert-warning');
+    }
+
+    public function update($id)
+    {
+        Validator::make($this->state, [
+            'name' => ['required', 'unique:permissions,name,'.$id],
+        ])->validate();
+        $permission = Permission::find($this->state['permission_id']);
+        $input = $this->state;
+        $permission->update($input);
+        $this->updateMode = false;
+        $this->dispatchBrowserEvent('hide-alert-warning');
+        $this->resetInputFields();
+        session()->flash('message', 'Permission updated successfully');
+        $this->dispatchBrowserEvent('initializeDataTable', ['table' => 'Permission', notifyMsg('success', 'Permission updated successfully')]);
     }
 
     private function resetInputFields()
     {
         $this->state['name'] = '';
+        $this->state['permission_id'] = '';
     }
 
 

@@ -57,6 +57,7 @@
     $(document).ready(function() {
         setInterval(update, 1000);
         $(".alert-warning").css('display', 'none');
+        toastrMessage();
     });
 
 
@@ -87,92 +88,94 @@
         });
     }
 
-    function initializeDataTable(tableId){
-            $("#"+tableId).DataTable({
-                "responsive": false,
-                "autoWidth": false,
-                "processing": true,
-                "dom": 'lBfrtip',
-                "buttons": [{
-                        extend: 'collection',
-                        text: "<i class='fa fa-ellipsis-v'></i>",
-                        buttons: [{
-                                extend: 'copy',
-                                exportOptions: {
-                                    columns: 'th:not(:last-child)'
-                                }
+    function initializeDataTable(tableId) {
+        $("#" + tableId).DataTable({
+            "responsive": false,
+            "autoWidth": false,
+            "processing": true,
+            "dom": 'lBfrtip',
+            "buttons": [{
+                    extend: 'collection',
+                    text: "<i class='fa fa-ellipsis-v'></i>",
+                    buttons: [{
+                            extend: 'copy',
+                            exportOptions: {
+                                columns: 'th:not(:last-child)'
+                            }
+                        },
+                        {
+                            extend: 'pdf',
+
+                            exportOptions: {
+                                columns: 'th:not(:last-child)'
+                            }
+                        },
+                        {
+                            extend: 'print',
+
+                            exportOptions: {
+                                columns: 'th:not(:last-child)'
                             },
-                            {
-                                extend: 'pdf',
 
-                                exportOptions: {
-                                    columns: 'th:not(:last-child)'
-                                }
-                            },
-                            {
-                                extend: 'print',
+                        },
+                    ],
 
-                                exportOptions: {
-                                    columns: 'th:not(:last-child)'
-                                },
-
-                            },
-                        ],
-
-                    },
-                    {
-                        extend: 'colvis',
-                        columns: ':not(.hidden)'
-                    }
-                ],
-
-                "language": {
-                    "infoEmpty": "No entries to show",
-                    "emptyTable": "No data available",
-                    "zeroRecords": "No records to display",
+                },
+                {
+                    extend: 'colvis',
+                    columns: ':not(.hidden)'
                 }
-            });
-            dataTablePosition();
-        }
+            ],
+
+            "language": {
+                "infoEmpty": "No entries to show",
+                "emptyTable": "No data available",
+                "zeroRecords": "No records to display",
+            }
+        });
+        dataTablePosition();
+    }
 </script>
 <script>
-    toastr.options = {
-        "closeButton": true,
-        "debug": false,
-        "newestOnTop": false,
-        "progressBar": true,
-        "positionClass": "toast-top-container",
-        "preventDuplicates": false,
-        "onclick": null,
-        "showDuration": "300",
-        "hideDuration": "1000",
-        "timeOut": "5000",
-        "extendedTimeOut": "1000",
-        "showEasing": "swing",
-        "hideEasing": "linear",
-        "showMethod": "fadeIn",
-        "hideMethod": "fadeOut"
-    };
-    @if (Session::has('message'))
-        var type = "{{ Session::get('alert-type', 'info') }}";
-        switch (type) {
-        case 'info':
-        toastr.info("{{ Session::get('message') }}");
-        break;
-    
-        case 'warning':
-        toastr.warning("{{ Session::get('message') }}");
-        break;
-    
-        case 'success':
-        toastr.success("{{ Session::get('message') }}");
-        break;
-    
-        case 'error':
-        toastr.error("{{ Session::get('message') }}");
-        break;
-        }
-    @endif
+    function toastrMessage() {
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-container",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+        @if (Session::has('message'))
+            var type = "{{ Session::get('alert-type', 'info') }}";
+            switch (type) {
+            case 'info':
+            toastr.info("{{ Session::get('message') }}");
+            break;
+        
+            case 'warning':
+            toastr.warning("{{ Session::get('message') }}");
+            break;
+        
+            case 'success':
+            toastr.success("{{ Session::get('message') }}");
+            break;
+        
+            case 'error':
+            toastr.error("{{ Session::get('message') }}");
+            break;
+            }
+        @endif
+    }
 </script>
 
 <script>
@@ -180,9 +183,31 @@
         $(".alert-warning").css('display', 'none');
     });
     window.addEventListener('initializeDataTable', (e) => {
-        initializeDataTable(e.detail);
+        initializeDataTable(e.detail.table);
+        toastrMsg(event);
+        
     });
-    
+
+    function toastrMsg(event)
+    {
+        toastr[event.detail.type](event.detail.message,toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-container",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        });
+    }
 </script>
 @yield('scripts')
 @livewireScripts
