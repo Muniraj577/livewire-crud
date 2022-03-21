@@ -135,6 +135,19 @@
         });
         dataTablePosition();
     }
+
+    function destroyTable(tableId) {
+        // if ($.fn.DataTable.isDataTable('#' + tableId)) {
+        //     $('#' + tableId).DataTable().clear();
+        // }
+
+        if ($.fn.dataTable.isDataTable('#'+tableId)) {
+            $('#'+tableId).DataTable().clear().destroy();
+            initializeDataTable(tableId);
+            location.reload()
+        }
+
+    }
 </script>
 <script>
     function toastrMessage() {
@@ -184,19 +197,15 @@
     });
     window.addEventListener('initializeDataTable', (e) => {
         initializeDataTable(e.detail.table);
-        toastrMsg(e);
-        
-        
+
     });
 
-    window.addEventListener('alert-message', (e) => {
-        // initializeDataTable(e.detail.table);
-        toastrMsg(e);
+    window.addEventListener('destroyTable', (e) => {
+        destroyTable(e.detail.table);
     });
 
-    function toastrMsg(event)
-    {
-        toastr[event.detail[0].type](event.detail[0].message,toastr.options = {
+    function toastrMsg(event) {
+        toastr[event.detail[0].type](event.detail[0].message, toastr.options = {
             "closeButton": true,
             "debug": false,
             "newestOnTop": false,

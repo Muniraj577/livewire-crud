@@ -74,7 +74,8 @@ class Permissions extends Component
     {
         $permission = Permission::find($id);
         $permission->delete();
-        $this->dispatchBrowserEvent('alert-message', ['table' => 'Permission', notifyMsg('success', 'Permission deleted successfully')]);
+        $this->dispatchBrowserEvent('destroyTable',['table' => 'Permission']);
+        $this->dispatchBrowserEvent('initializeDataTable', ['table' => 'Permission', notifyMsg('success', 'Permission deleted successfully')]);
     }
 
     private function resetInputFields()
